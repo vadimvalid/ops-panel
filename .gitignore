@@ -42,3 +42,7 @@ __screenshots__/
 .env
 .env.local
 .env.*.local
+
+# Claude Code configuration and rules (local only)
+.claude/
+CLAUDE.md
