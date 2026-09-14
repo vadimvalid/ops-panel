@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import type { Role } from '@/types/domain'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppBadge from '@/components/ui/AppBadge.vue'
 
@@ -14,11 +15,17 @@ const sidebarOpen = ref(false)
 // Navigating should never leave the mobile drawer covering the new page.
 watch(() => route.fullPath, () => { sidebarOpen.value = false })
 
-const NAV = [
+interface NavItem {
+  to: string
+  label: string
+  exact: boolean
+  /** Minimum role needed to see the entry; absent means everyone signed in. */
+  minimum?: Role
+}
+
+const NAV: NavItem[] = [
   { to: '/', label: 'Dashboard', exact: true },
   { to: '/users', label: 'Users', exact: false },
-  { to: '/subscriptions', label: 'Subscriptions', exact: false },
-  { to: '/payments', label: 'Payments', exact: false, minimum: 'support' as const },
 ]
 
 async function signOut() {
