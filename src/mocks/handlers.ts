@@ -4,6 +4,14 @@ import type { Payment, Role, Subscription, User } from '@/types/domain'
 
 const BASE = '/api'
 
+/** Latency makes loading states visible in the browser, but only slows tests
+ *  down — they assert on the settled result, not the wait. */
+const ARTIFICIAL_LATENCY = !import.meta.env?.VITEST
+
+function pause(ms: number) {
+  return ARTIFICIAL_LATENCY ? delay(ms) : Promise.resolve()
+}
+
 /** Opaque token encoding the user id; good enough to fake a session. */
 function issueToken(userId: string): string {
   return `mock.${btoa(userId)}.token`
@@ -76,7 +84,7 @@ function sortItems<T extends Record<string, unknown>>(items: T[], url: URL): T[]
 
 export const handlers = [
   http.post(`${BASE}/auth/login`, async ({ request }) => {
-    await delay(600)
+    await pause(600)
     const body = (await request.json()) as { email?: string; password?: string }
 
     const fields: Record<string, string> = {}
@@ -96,18 +104,18 @@ export const handlers = [
   }),
 
   http.post(`${BASE}/auth/logout`, async () => {
-    await delay(200)
+    await pause(200)
     return new HttpResponse(null, { status: 204 })
   }),
 
   http.get(`${BASE}/auth/me`, async ({ request }) => {
-    await delay(300)
+    await pause(300)
     const user = userFromRequest(request)
     return user ? HttpResponse.json(user) : unauthorized()
   }),
 
   http.get(`${BASE}/users`, async ({ request }) => {
-    await delay(500)
+    await pause(500)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
 
@@ -131,7 +139,7 @@ export const handlers = [
   }),
 
   http.get(`${BASE}/users/:id`, async ({ request, params }) => {
-    await delay(300)
+    await pause(300)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
 
@@ -142,7 +150,7 @@ export const handlers = [
   }),
 
   http.patch(`${BASE}/users/:id`, async ({ request, params }) => {
-    await delay(500)
+    await pause(500)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
     if (!atLeast(actor, 'admin')) return forbidden()
@@ -172,7 +180,7 @@ export const handlers = [
   }),
 
   http.get(`${BASE}/subscriptions`, async ({ request }) => {
-    await delay(500)
+    await pause(500)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
 
@@ -188,7 +196,7 @@ export const handlers = [
   }),
 
   http.get(`${BASE}/payments`, async ({ request }) => {
-    await delay(500)
+    await pause(500)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
     // Billing data is restricted; viewers get a 403 so the UI can prove it handles one.
@@ -206,12 +214,12 @@ export const handlers = [
   }),
 
   http.get(`${BASE}/plans`, async ({ request }) => {
-    await delay(200)
+    await pause(200)
     return userFromRequest(request) ? HttpResponse.json(plans) : unauthorized()
   }),
 
   http.get(`${BASE}/stats/overview`, async ({ request }) => {
-    await delay(700)
+    await pause(700)
     const actor = userFromRequest(request)
     if (!actor) return unauthorized()
 
