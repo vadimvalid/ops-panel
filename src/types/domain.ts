@@ -41,8 +41,7 @@ export interface Subscription {
   cancelledAt: string | null
 }
 
-export const SUBSCRIPTION_STATUSES = ['active', 'trialing', 'past_due', 'cancelled'] as const
-export type SubscriptionStatus = (typeof SUBSCRIPTION_STATUSES)[number]
+export type SubscriptionStatus = 'active' | 'trialing' | 'past_due' | 'cancelled'
 
 export interface Payment {
   id: string
@@ -57,8 +56,7 @@ export interface Payment {
   description: string
 }
 
-export const PAYMENT_STATUSES = ['succeeded', 'pending', 'failed', 'refunded'] as const
-export type PaymentStatus = (typeof PAYMENT_STATUSES)[number]
+export type PaymentStatus = 'succeeded' | 'pending' | 'failed' | 'refunded'
 
 /** Envelope every list endpoint returns. */
 export interface Paginated<T> {

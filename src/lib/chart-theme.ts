@@ -22,15 +22,7 @@ const PLAN_RAMP_DARK = ['#cde2fb', '#9ec5f4', '#5598e7', '#2a78d6'] as const
 const TREND_LIGHT = '#2a78d6'
 const TREND_DARK = '#3987e5'
 
-/** Reserved status colours — never reused as a series colour. */
-export const STATUS_COLORS = {
-  good: '#0ca30c',
-  warning: '#fab219',
-  serious: '#ec835a',
-  critical: '#d03b3b',
-} as const
-
-export function isDarkMode(): boolean {
+function isDarkMode(): boolean {
   if (typeof document === 'undefined') return false
   const explicit = document.documentElement.dataset.theme
   if (explicit === 'dark') return true
