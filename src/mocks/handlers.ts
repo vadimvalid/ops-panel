@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from 'msw'
 import { credentials, payments, plans, subscriptions, users } from './data'
-import type { Payment, Role, Subscription, User } from '@/types/domain'
+import type { Role, Subscription, User } from '@/types/domain'
 
 const BASE = '/api'
 
@@ -191,24 +191,6 @@ export const handlers = [
     let result: Subscription[] = subscriptions
     if (status) result = result.filter((s) => s.status === status)
     if (plan) result = result.filter((s) => s.planId === plan)
-
-    return paginate(sortItems(result as unknown as Record<string, unknown>[], url), url)
-  }),
-
-  http.get(`${BASE}/payments`, async ({ request }) => {
-    await pause(500)
-    const actor = userFromRequest(request)
-    if (!actor) return unauthorized()
-    // Billing data is restricted; viewers get a 403 so the UI can prove it handles one.
-    if (!atLeast(actor, 'support')) return forbidden()
-
-    const url = new URL(request.url)
-    const status = url.searchParams.get('status')
-    const userId = url.searchParams.get('userId')
-
-    let result: Payment[] = payments
-    if (status) result = result.filter((p) => p.status === status)
-    if (userId) result = result.filter((p) => p.userId === userId)
 
     return paginate(sortItems(result as unknown as Record<string, unknown>[], url), url)
   }),
