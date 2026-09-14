@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@source '../../node_modules/flowbite';
 
 /* Design tokens. Single source of truth for colour, radius and elevation.
    Referenced through Tailwind utilities (bg-surface, text-muted, ...) so

@@ -17,10 +17,6 @@ export function formatDate(iso: string): string {
   return format(parseISO(iso), 'd MMM yyyy')
 }
 
-export function formatDateTime(iso: string): string {
-  return format(parseISO(iso), 'd MMM yyyy, HH:mm')
-}
-
 /** "3 days ago"; returns a dash for a missing timestamp so tables stay aligned. */
 export function formatRelative(iso: string | null): string {
   if (!iso) return '—'

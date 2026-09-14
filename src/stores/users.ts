@@ -39,38 +39,5 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const saving = ref(false)
-  const saveError = ref<ApiError | null>(null)
-
-  async function update(id: string, patch: Partial<User>): Promise<User | null> {
-    saving.value = true
-    saveError.value = null
-
-    try {
-      const { data } = await http.patch<User>(`/users/${id}`, patch)
-
-      // Keep the row in the current page in step with the server's version.
-      const index = items.value.findIndex((user) => user.id === id)
-      if (index !== -1) items.value[index] = data
-
-      return data
-    } catch (e) {
-      saveError.value = isApiError(e) ? e : { status: 0, message: 'Unexpected error.' }
-      return null
-    } finally {
-      saving.value = false
-    }
-  }
-
-  function $reset() {
-    items.value = []
-    total.value = 0
-    loading.value = false
-    error.value = null
-    initialLoad.value = true
-    saving.value = false
-    saveError.value = null
-  }
-
-  return { items, total, loading, error, initialLoad, saving, saveError, fetchList, update, $reset }
+  return { items, total, loading, error, initialLoad, fetchList }
 })

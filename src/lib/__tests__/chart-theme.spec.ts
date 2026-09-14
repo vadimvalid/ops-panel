@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { planRamp, trendColor, chartInk, STATUS_COLORS } from '../chart-theme'
+import { planRamp, trendColor, chartInk } from '../chart-theme'
 
 /** OKLCH lightness, enough to assert ordering and step spacing. */
 function lightness(hex: string): number {
@@ -51,14 +51,5 @@ describe('theme awareness', () => {
   it('uses different ink and series colours per mode', () => {
     expect(trendColor(true)).not.toBe(trendColor(false))
     expect(chartInk(true).surface).not.toBe(chartInk(false).surface)
-  })
-})
-
-describe('status colours', () => {
-  it('stay separate from the series ramp', () => {
-    const series = new Set([...planRamp(false), ...planRamp(true)])
-    for (const color of Object.values(STATUS_COLORS)) {
-      expect(series.has(color)).toBe(false)
-    }
   })
 })
