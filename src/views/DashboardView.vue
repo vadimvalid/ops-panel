@@ -1,12 +1,17 @@
 <script setup lang="ts">
-// Placeholder home screen. Real widgets arrive with the dashboard feature.
+import AppCard from '@/components/ui/AppCard.vue'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
 </script>
 
 <template>
-  <main class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-    <h1 class="text-2xl font-semibold tracking-tight">ops-panel</h1>
-    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-      Project scaffold is ready. Features land on their own branches.
-    </p>
-  </main>
+  <div class="space-y-4">
+    <AppCard title="Welcome">
+      <p class="text-sm text-[var(--color-ink-muted)]">
+        Signed in as {{ auth.user?.name }} ({{ auth.user?.role }}). Dashboard widgets arrive with
+        the next feature.
+      </p>
+    </AppCard>
+  </div>
 </template>
