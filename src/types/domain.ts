@@ -72,3 +72,21 @@ export interface AuthSession {
   token: string
   user: User
 }
+
+export interface MonthlyPoint {
+  /** "YYYY-MM". */
+  month: string
+  total: number
+}
+
+export interface StatsOverview {
+  activeUsers: number
+  activeSubscriptions: number
+  pastDueSubscriptions: number
+  /** Monthly recurring revenue, minor units. */
+  mrr: number
+  currency: string
+  revenue: MonthlyPoint[]
+  signups: MonthlyPoint[]
+  planBreakdown: { planId: PlanId; name: string; count: number }[]
+}
