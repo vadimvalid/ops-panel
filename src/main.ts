@@ -6,9 +6,22 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
+/** Mocks are opt-in and tree-shaken out of a production build. */
+async function startMocks() {
+  if (!import.meta.env.DEV || import.meta.env.VITE_ENABLE_MOCKS === 'false') return
 
-app.use(createPinia())
-app.use(router)
+  const { worker } = await import('./mocks/browser')
+  await worker.start({
+    onUnhandledRequest: 'bypass',
+    quiet: true,
+  })
+}
 
-app.mount('#app')
+startMocks().then(() => {
+  const app = createApp(App)
+
+  app.use(createPinia())
+  app.use(router)
+
+  app.mount('#app')
+})
