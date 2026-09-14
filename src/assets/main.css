@@ -1,0 +1,67 @@
+@import 'tailwindcss';
+@source '../../node_modules/flowbite';
+
+/* Design tokens. Single source of truth for colour, radius and elevation.
+   Referenced through Tailwind utilities (bg-surface, text-muted, ...) so
+   components never hard-code a hex value. */
+@theme {
+  --color-brand-50: oklch(0.97 0.014 254);
+  --color-brand-100: oklch(0.93 0.032 255);
+  --color-brand-200: oklch(0.88 0.059 254);
+  --color-brand-300: oklch(0.81 0.096 252);
+  --color-brand-400: oklch(0.71 0.143 254);
+  --color-brand-500: oklch(0.62 0.184 260);
+  --color-brand-600: oklch(0.55 0.208 263);
+  --color-brand-700: oklch(0.49 0.191 264);
+  --color-brand-800: oklch(0.42 0.157 266);
+  --color-brand-900: oklch(0.38 0.125 266);
+
+  --radius-card: 0.75rem;
+}
+
+/* Semantic surface tokens flip with the theme; components reference these
+   rather than raw palette steps. */
+@layer base {
+  :root {
+    --color-canvas: var(--color-gray-50);
+    --color-surface: #fff;
+    --color-surface-muted: var(--color-gray-100);
+    --color-line: var(--color-gray-200);
+    --color-ink: var(--color-gray-900);
+    --color-ink-muted: var(--color-gray-500);
+  }
+
+  :root.dark {
+    --color-canvas: var(--color-gray-950);
+    --color-surface: var(--color-gray-900);
+    --color-surface-muted: var(--color-gray-800);
+    --color-line: var(--color-gray-800);
+    --color-ink: var(--color-gray-50);
+    --color-ink-muted: var(--color-gray-400);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Visible focus for keyboard users (WCAG 2.4.7) without punishing mouse users. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
